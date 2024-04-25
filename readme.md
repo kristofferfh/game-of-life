@@ -1,2 +1,7 @@
-# Convway's game of life in JS
+# Conway's Game of Life in JS
 wip
+
+- Clickable frames, get cursors event fram id, change state
+- generate id from row (tr) -> column (td)
+- exponential game speed slide? custom bezier function?
+
