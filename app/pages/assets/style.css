@@ -11,14 +11,18 @@
 }
 
 :root {
-  --background-color: var(--root-background-light-1);
-  --text-color: var(--root-text-dark-1);
+  --color-background: var(--root-background-light-1);
+  --color-foreground: var(--root-background-light-1);
+  --color-text: var(--root-text-dark-1);
+  --color-border: var(--root-background-dark-3);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background-color: var(--root-background-dark-1);
-    --text-color: var(--root-text-light-1);
+    --color-background: var(--root-background-dark-1);
+    --color-foreground: var(--root-background-dark-3);
+    --color-text: var(--root-text-light-1);
+    --color-border: var(--root-background-dark-3);
   }
 }
 
@@ -34,8 +38,8 @@ body {
   width: 100svw;
   height: 100svh;
 
-  background-color: var(--background-color);
-  color: var(--text-color);
+  background-color: var(--color-background);
+  color: var(--color-text);
 }
 
 aside {
@@ -80,4 +84,25 @@ footer {
 .menu-checkbox {
   display: flex;
   justify-content: space-between;
+}
+
+table {
+  width: 100%;
+  height: 100%;
+
+  border-collapse: collapse;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+
+  tr {
+    border-top: 1px solid var(--color-border);
+  }
+
+  td {
+    border-left: 1px solid var(--color-border);
+  }
+}
+
+.alive {
+  background-color: var(--color-foreground);
 }
