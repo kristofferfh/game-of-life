@@ -7,7 +7,7 @@ export const createBoard = (height, width, random = false) => {
     boardState.push([])
     for (let columnIndex = 0; columnIndex < width; columnIndex++) {
       if (random) {
-        boardState[rowIndex][columnIndex] = Math.random() < 0.2
+        boardState[rowIndex][columnIndex] = Math.random() < 0.3
       } else {
         boardState[rowIndex][columnIndex] = false
       }
@@ -44,13 +44,13 @@ export const updateBoard = (currentGeneration) => {
       const state = currentGeneration[rowIndex][columnIndex]
       const neighbors = countNeighbors(currentGeneration, rowIndex, columnIndex)
 
-      if (state && (neighbors < 2 || neighbors > 3)) {
+      /* if (state && (neighbors < 2 || neighbors > 3)) {
         nextGeneration[rowIndex][columnIndex] = false
       } else if (state && (neighbors === 2 || neighbors === 3)) {
         nextGeneration[rowIndex][columnIndex] = true
       } else if (!state && (neighbors === 3)) {
         nextGeneration[rowIndex][columnIndex] = true
-      }
+      } */
 
 
       /* if (state && (neighbors > 2 || neighbors < 3)) {
@@ -63,12 +63,19 @@ export const updateBoard = (currentGeneration) => {
         nextGeneration[rowIndex][columnIndex] = false
       } */
 
+      if (state) {
+        if (neighbors < 2 || neighbors > 3) nextGeneration[rowIndex][columnIndex] = false
+        if (neighbors == 2 || neighbors == 3) nextGeneration[rowIndex][columnIndex] = true
+      } else {
+        if (neighbors == 2) nextGeneration[rowIndex][columnIndex] = true
+      }
+
 
 
       // More room for new rules :> lets have some fun here later
 
       // Verify rules
-      // console.log(`X:${rowIndex} Y:${columnIndex} State:${state ? 'alive' : 'dead'} Neighbors:${neighbors} Action: ${nextGeneration[rowIndex][columnIndex] ? 'live' : 'die'}`)
+      // console.log(`X:${rowIndex} Y:${columnIndex} State:${state ? 'alive' : 'dead'} Neighbors:${neighbors} Next: ${nextGeneration[rowIndex][columnIndex] ? 'live' : 'die'}`)
     }
   }
 
@@ -82,10 +89,14 @@ const countNeighbors = (boardstate, x, y, wrap = false) => {
   if (wrap) {
     // I'll implement wrapping later
   } else {
+    // Iterate 3 times in two dimensions
     for (let row = -1; row < 2; row++) {
-      if ((row + x) >= 0 && (row + x) < boardstate.length) {
-        for (let column = -1; column < 2; column++) {
-          if ((column + y) >= 0 && (column + y) < boardstate[x].length) {
+      for (let column = -1; column < 2; column++) {
+        // Skip self
+        if (row !== 1 && column !== 1) {
+          // Constrain board
+          if (((row + x) >= 0 && (row + x) < boardstate.length) && ((column + y) >= 0 && (column + y) < boardstate[x].length)) {
+            // If neighbor state is true, increment
             if (boardstate[row + x][column + y]) neighbors ++
           }
         }
@@ -93,6 +104,5 @@ const countNeighbors = (boardstate, x, y, wrap = false) => {
     }
   }
 
-  // neighbors = Math.floor((Math.random() * 9))
   return neighbors
 }
