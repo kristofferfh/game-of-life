@@ -4,13 +4,14 @@ import { createBoard, drawBoard, updateBoard } from "./scripts/gol.js";
 const container = document.getElementById("main");
 
 // Input values
-let boardHeight = 200;
-let boardWidth = 300;
-let gameSpeed = 10;
+let boardHeight = 6;
+let boardWidth = 6;
+let boardSpeed = 1;
 let boardWrap = false;
 
 // States
 let gameInterval = null;
+let gameSpeed = 100 * (11 - boardSpeed)
 let gameTic = 0;
 let stuckCount = 0;
 let gamePaused = true;
@@ -30,6 +31,7 @@ const updateBoardDom = () => {
       }
 
       const cell = document.getElementById(`cell-${rowIndex + 1}-${collumnIndex + 1}`)
+
       if (next[rowIndex][collumnIndex]) {
         cell.className = 'alive'
       } else {
@@ -56,11 +58,11 @@ const gameStart = (tic) => {
   if (!gamePaused) return
 
   // Invalid speed from input element
-  if (gameSpeed > 99) return console.log("Invalid speed")
+  if (gameSpeed < 99 || gameSpeed > 9999) return console.log("Invalid speed: " + gameSpeed)
 
   // Reset interval to avoid duplicate runs
   clearInterval(gameInterval)
-  gameInterval = setInterval(() => updateBoardDom(), 200 - (gameSpeed * 10))
+  gameInterval = setInterval(() => updateBoardDom(), gameSpeed)
   gamePaused = false
   stuckCount = 0;
 }
